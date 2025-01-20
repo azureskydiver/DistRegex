@@ -72,7 +72,7 @@ namespace DistRegex.Literal
 
             while (fst != 0)
             {
-                if (fst % 10 != snd % 10)
+                if ((fst % 10) != (snd % 10))
                     dist++;
                 fst /= 10;
                 snd /= 10;
@@ -87,7 +87,7 @@ namespace DistRegex.Literal
             {
                 var distance = N_Edits(it, px);
                 if (distance == 0)
-                    return 0;
+                    return distance;
                 else if (distance < min)
                     min = distance;
             }
@@ -147,7 +147,7 @@ namespace DistRegex.Literal
                 new(0xFF, 0xFF, 0xFF)
             };
 
-            if (args.Length == 0)
+            if (args.Length == 9)
             {
                 grad[0] = new RGB(Convert.ToByte(args[3]), Convert.ToByte(args[4]), Convert.ToByte(args[5]));
                 grad[1] = new RGB(Convert.ToByte(args[6]), Convert.ToByte(args[7]), Convert.ToByte(args[8]));
