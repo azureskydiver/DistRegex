@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -97,15 +98,22 @@ namespace DistRegex.Literal
         public Img Apply(string restr, RGB [] grad)
         {
             var re = new Regex(restr, RegexOptions.Compiled);
+
             string format = $"D{_depth}";
             var d0 = _data.AsParallel()
                           .WithDegreeOfParallelism(4)
                           .Where(val => re.IsMatch(val.ToString(format)))
                           .ToList();
-            var res = _data.AsParallel()
-                           .AsOrdered()
-                           .WithDegreeOfParallelism(4)
-                           .Select(it => D_To_Col(grad, Min_Distance(it, d0, _depth) / (double)_depth));
+
+            var res = new RGB[_data.Length];
+            var partioner = Partitioner.Create(0, _data.Length);
+            Parallel.ForEach(partioner,
+                             new ParallelOptions() { MaxDegreeOfParallelism = 4 },
+                             (range, _) =>
+                             {
+                                 for (int i = range.Item1; i < range.Item2; i++)
+                                     res[i] = D_To_Col(grad, Min_Distance(_data[i], d0, _depth) / (double)_depth);
+                             });
             return new Img(res);
         }
     }
