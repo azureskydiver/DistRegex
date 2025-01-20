@@ -5,6 +5,19 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StartupObject>DistRegex.Program</StartupObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\z\DistRegex\DistRegex\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\z\DistRegex\DistRegex\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
+  </ItemGroup>
 
 </Project>
